@@ -19,7 +19,10 @@ def user(db, django_user_model, django_username_field):
         user = UserModel._default_manager.get(**{username_field: "user@test.com"})
     except UserModel.DoesNotExist:
         user = UserModel._default_manager.create_user(
-            email="user@test.com", first_name="Test", last_name="User", password="testpass1234"
+            email="user@test.com",
+            first_name="Test",
+            last_name="User",
+            password="testpass1234",
         )
 
     return user
@@ -28,10 +31,10 @@ def user(db, django_user_model, django_username_field):
 @pytest.fixture
 def book(db, author):
     return Book.objects.create(
-        code='CD12/35',
+        code="CD12/35",
         author=author,
         title="David Copperfield",
         year=1849,
         edition="1st Edition",
-        available=True
+        available=True,
     )

@@ -26,11 +26,11 @@ class Book(models.Model):
 
     def checkout_book(self):
         self.available = False
-        self.save(update_fields=['available'])
+        self.save(update_fields=["available"])
 
     def return_book(self):
         self.available = True
-        self.save(update_fields=['available'])
+        self.save(update_fields=["available"])
 
 
 class BookLoan(models.Model):
@@ -43,7 +43,7 @@ class BookLoan(models.Model):
     days_overdue = models.IntegerField(default=0)
 
     def __str__(self):
-        return f'{self.user} - {self.book}'
+        return f"{self.user} - {self.book}"
 
     @property
     def date_due(self):
@@ -64,3 +64,6 @@ class BookLoan(models.Model):
             return days_overdue
         else:
             return 0
+
+    def overdue_email_notification(self):
+        pass

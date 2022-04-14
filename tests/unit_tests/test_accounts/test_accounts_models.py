@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 
 import pytest
 
+
 def test_create_user_method(new_user):
     assert not new_user.is_staff
 
@@ -27,18 +28,18 @@ def test_get_short_name_method(new_user):
 def test_bad_email_fails_validation(db):
     with pytest.raises(ValidationError):
         get_user_model().objects.create_user(
-        email="Test",
-        first_name="Test1",
-        last_name="Test2",
-        password="TestPass23",
-    )
+            email="Test",
+            first_name="Test1",
+            last_name="Test2",
+            password="TestPass23",
+        )
 
 
 def test_no_email_fails_validation(db):
     with pytest.raises(ValidationError):
         get_user_model().objects.create_user(
-        email="",
-        first_name="Test1",
-        last_name="Test2",
-        password="TestPass23",
-    )
+            email="",
+            first_name="Test1",
+            last_name="Test2",
+            password="TestPass23",
+        )

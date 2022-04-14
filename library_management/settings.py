@@ -45,8 +45,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "accounts",
-    'billing',
-    'book_mgt',
+    "billing",
+    "book_mgt",
 ]
 
 MIDDLEWARE = [
