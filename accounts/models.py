@@ -4,7 +4,8 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin,
 )
-from django.forms import ValidationError
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 
 
 class UserManager(BaseUserManager):
@@ -14,6 +15,10 @@ class UserManager(BaseUserManager):
         """Create a new user."""
         if not email:
             raise ValidationError("A user must have an email address.")
+        try:
+            validate_email(email)
+        except ValidationError:
+            raise ValidationError("A user must have a valid email address.")
         email = self.normalize_email(email)
         user = self.model(email=email, first_name=first_name, last_name=last_name)
         user.set_password(password)
