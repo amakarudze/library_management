@@ -38,3 +38,16 @@ def book(db, author):
         edition="1st Edition",
         available=True,
     )
+
+
+@pytest.fixture
+def book_loan(db, book, user):
+    return BookLoan.objects.create(book=book, user=user)
+
+
+@pytest.fixture
+def overdue_book(book_loan, mocker):
+    with mocker.patch(book) as overdue:
+        overdue.is_overdue.return_value = True
+        overdue.days_overdue.return_value = 5
+    return overdue

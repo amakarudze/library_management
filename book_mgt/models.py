@@ -2,6 +2,8 @@ from datetime import date, timedelta
 
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 
 class Author(models.Model):
@@ -38,6 +40,7 @@ class BookLoan(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     date_loaned_out = models.DateField(auto_now_add=True)
     date_due = models.DateField()
+    returned = models.BooleanField(default=False)
     date_returned = models.DateField(blank=True, null=True)
     is_overdue = models.BooleanField(default=False)
     days_overdue = models.IntegerField(default=0)
@@ -61,9 +64,14 @@ class BookLoan(models.Model):
             return days_overdue.days
         elif self.is_overdue and not self.date_returned:
             days_overdue = date.today() - self.date_due.date()
-            return days_overdue
+            return days_overdue.days
         else:
             return 0
 
     def overdue_email_notification(self):
-        pass
+        template = 'emails/overdue_email.html'
+        subject = f'The {self.book} you borrowed is overdue.'
+        message = render_to_string(template, {})
+        from_email = ''
+        to_email = self.user.email
+        send_mail(subject, message, from_email, [to_email], html_message=message)
